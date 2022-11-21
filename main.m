@@ -1,4 +1,4 @@
-function Prob = main(A, w, t_final, initial_state, target_state) 
+function Prob = main(A, w, t_final, target_state_num) 
 	clc; hold on;
 	x_min = -80; x_max = 80;
 	x_range = x_max - x_min;
@@ -14,13 +14,9 @@ function Prob = main(A, w, t_final, initial_state, target_state)
       	t_final = 400;
 	end
 
-	if ~exist('initial_state','var')
-		initial_state = normalize(hermiteH(0 , X) .* gaussian_state, "norm");
-	end
+	initial_state = normalize(hermiteH(0 , X) .* gaussian_state, "norm");
 
-	if ~exist('target_state','var')
-		target_state = normalize(hermiteH(1 , X) .* gaussian_state, "norm");
-	end
+	target_state = normalize(hermiteH(target_state_num , X) .* gaussian_state, "norm");
 
 	dt = 0.005;
 	num_steps = ceil(t_final / dt); T = 1 : num_steps;
@@ -45,9 +41,12 @@ function Prob = main(A, w, t_final, initial_state, target_state)
 	end
 
 	
-	plot(T * dt, Prob);
-	title(sprintf("A = %.3f, w = %.3f", A, w));
-	file_name = sprintf("A=%.3f, w=%.3f, t_final=%g", A, w, t_final);
+	plot(T * dt/pi, Prob);
+	title(sprintf("A = %.3f, w = %.3f for state 0\\rightarrow%i", A, w, target_state_num));
+    xlabel('t/\pi');
+    xlim([0,T(end)*dt/pi])
+    ylabel(sprintf('P_{0\\rightarrow%i}', target_state_num));
+	file_name = sprintf("A=%.3f, w=%.3f, t_final=%g, State=0-%i", A, w, t_final, target_state_num);
 	saveas(gcf, sprintf(".\\plots\\%s.svg", file_name));
 	% close;
 	
