@@ -25,7 +25,6 @@ function Prob = main(A, w, t_final, target_state_num)
 	
 	Prob = zeros(1, num_steps);
 
-
 	U_t = exp(-1i * dt * (P .^ 2 / 2));
 	curr_state = initial_state;
 	
@@ -47,7 +46,7 @@ function Prob = main(A, w, t_final, target_state_num)
 	xlabel('t/\pi');
 	xlim([0,T(end)*dt/pi])
     ylabel(sprintf('P_{0\\rightarrow%i}', target_state_num));
-	file_name = sprintf("A=%.3f, w=%.3f, t_final=%g, State=0-%i", A, w, t_final, target_state_num);
+	file_name = sprintf("A=%.3f, w=%.3f, t_final=%gpi, State=0-%i", A, w, t_final/pi, target_state_num);
 	saveas(gcf, sprintf(".\\plots\\%s.svg", file_name));
 	% close;
 	

@@ -1,7 +1,8 @@
 function run()
 	clc; tic;
 	A_list = [0.01, 0.02];
-	w_list = [0.48, 0.49, 0.98];
+
+	w_list = [0.48, 0.49, 0.];
 
 	t_final = 120 * pi;
 
