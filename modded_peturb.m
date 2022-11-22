@@ -33,22 +33,22 @@ function Prob = modded_peturb(A, w, t_final, target_state_num, peturb_type)
 	U_t = exp(-1i * dt * (P .^ 2 / 2));
 	curr_state = initial_state;
 	
+    if strcmp(peturb_type,'none')
+        peturb_term = @(x) A * sin(X) * cos(w * x * dt) + (X .^ 2 / 2);
+    elseif strcmp(peturb_type,'sawtooth')
+        peturb_term = @(x) A * sawtooth(X-pi) * sawtooth(w * x * dt) + (X .^ 2 / 2);
+    elseif strcmp(peturb_type,'triangle')
+        peturb_term = @(x) A * sawtooth(X+pi/2,1/2) * -sawtooth(w * x * dt,1/2) + (X .^ 2 / 2);
+    elseif strcmp(peturb_type,'square')
+        peturb_term = @(x) A  * square(X) * square(w * x * dt) + (X .^ 2 / 2);
+    elseif strcmp(peturb_type,'quadratic')
+        peturb_term = @(x) A * sin(X) * cos(w * x * dt) + (X .^ 2 / 2) + (X .^ 4 / 8);
+    else
+        peturb_term = @(x) A * sin(X) * cos(w * x * dt) + (X .^ 2 / 2);
+    end
+
 	for i1 = T
-        if strcmp(peturb_type,'none')
-            peturb_term = A * sin(X) * cos(w * i1 * dt) + (X .^ 2 / 2);
-        elseif strcmp(peturb_type,'sawtooth')
-            peturb_term = A * sawtooth(X-pi) * sawtooth(w * i1 * dt) + (X .^ 2 / 2);
-        elseif strcmp(peturb_type,'triangle')
-            peturb_term = A * sawtooth(X+pi/2,1/2) * -sawtooth(w * i1 * dt,1/2) + (X .^ 2 / 2);
-        elseif strcmp(peturb_type,'square')
-            peturb_type = A  * square(X) * square(w * i1 * dt,1/2) + (X .^ 2 / 2);
-        elseif strcmp(peturb_type,'quadratic')
-            peturb_term = A * sin(X) * cos(w * i1 * dt) + (X .^ 2 / 2) + (X .^ 4 / 8);
-        else
-            peturb_term = A * sin(X) * cos(w * i1 * dt) + (X .^ 2 / 2);
-        end
-        
-    	U_v = exp(((-1i/2) * dt) * peturb_term);
+    	U_v = exp(((-1i/2) * dt) * peturb_term(i1));
 
 		curr_state = U_v .* curr_state;
 		curr_state = U_t .* fft(curr_state);
@@ -59,13 +59,13 @@ function Prob = modded_peturb(A, w, t_final, target_state_num, peturb_type)
 	
 	end
 
-	plot(T * dt/pi, Prob);
-	title(sprintf("A = %.3f, w = %.3f for state 0\\rightarrow%i, %s", A, w, target_state_num, peturb_type), FontSize=18);
-	xlabel('t/\pi', FontSize=18);
-	xlim([0,T(end)*dt/pi])
+    plot(T * dt/pi, Prob);
+    title(sprintf("A = %.3f, w = %.3f for state 0\\rightarrow%i, %s", A, w, target_state_num, peturb_type), FontSize=18);
+    xlabel('t/\pi', FontSize=18);
+    xlim([0,T(end)*dt/pi])
     ylabel(sprintf('P_{0\\rightarrow%i}', target_state_num), FontSize=18);
-	file_name = sprintf("A=%.3f, w=%.3f, t_final=%g, State=0-%i, $s", A, w, t_final, target_state_num, peturb_type);
-	saveas(gcf, sprintf(".\\plots\\%s.svg", file_name));
+    file_name = sprintf("A=%.3f, w=%.3f, t_final=%g, State=0-%i, %s", A, w, t_final, target_state_num, peturb_type);
+    saveas(gcf, sprintf(".\\plots\\%s.svg", file_name));
 	% close;
 	
 % 	plot(T * dt, freq(Prob));
