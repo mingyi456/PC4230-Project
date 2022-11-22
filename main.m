@@ -45,7 +45,7 @@ function Prob = main(A, w, t_final, target_state_num)
 		v_nm = v_matrix(1, target_state_num + 1);
 	end
 
-	Prob_theo_prop = 4 * (abs(v_nm) ^ 2);
+	Prob_theo_prop = 2 * (abs(v_nm) ^ 2);
 
 	Prob_theo_major = Prob_theo_prop * (sin((w - w_nm) * T * dt / 2).^2) / ((w - w_nm) ^ 2);
 	
