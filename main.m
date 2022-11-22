@@ -43,14 +43,17 @@ function [time_axis, Prob, Prob_theo] = main(A, w, t_final, target_state_num)
 	
 	if rem(target_state_num, 2) ~= 0
 		v_nm = v_matrix(1, target_state_num + 1);
-		Prob_theo_prop = 2 * (abs(v_nm) ^ 2);
-		Prob_theo_major = Prob_theo_prop * (sin((w - w_nm) * T * dt / 2).^2) / ((w - w_nm) ^ 2);
-		Prob_theo_minor = Prob_theo_prop * (sin((w + w_nm) * T * dt / 2).^2) / ((w + w_nm) ^ 2);
+		Prob_theo_prop = (abs(v_nm) ^ 2);
+		sin_arg = (w - w_nm) * T * dt / 2;
+		Prob_theo_major = Prob_theo_prop * (sin(sin_arg).^2) / ((w - w_nm) ^ 2);
+		sin_arg = (w + w_nm) * T * dt / 2;
+		Prob_theo_minor = Prob_theo_prop * (sin(sin_arg).^2) / ((w + w_nm) ^ 2);
 		Prob_theo = Prob_theo_major + Prob_theo_minor;
 	else
 		v_sum = v_matrix(target_state_num + 1, :) * (v_matrix(:, 1) ./ (v_matrix(:, 1) - w));
 		Prob_theo_prop = (abs(v_sum * 40) ^ 2);
-		Prob_theo = Prob_theo_prop * (sin((w_nm - 2 * w) * T * dt / 2) .^ 2) / ((w_nm - 2 * w) ^ 2);
+		sin_arg = (w_nm - 2 * w) * (T * dt) / 2;
+		Prob_theo = Prob_theo_prop * (sin(sin_arg) .^ 2) / ((w_nm - 2 * w) ^ 2);
 	end
 
 	time_axis = T * dt / pi;
