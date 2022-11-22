@@ -38,10 +38,13 @@ function [time_axis, Prob, Prob_theo] = main(A, w, t_final, target_state_num)
 	
 	end
 
+	time_axis = T * dt / pi;
+	plot(time_axis, Prob);
+
 	v_matrix = calc_v_matrix(A);
 	w_nm = target_state_num;
 	
-	if rem(target_state_num, 2) ~= 0
+	if target_state_num == 1
 		v_nm = v_matrix(1, target_state_num + 1);
 		Prob_theo_prop = (abs(v_nm) ^ 2);
 		sin_arg = (w - w_nm) * T * dt / 2;
@@ -49,18 +52,19 @@ function [time_axis, Prob, Prob_theo] = main(A, w, t_final, target_state_num)
 		sin_arg = (w + w_nm) * T * dt / 2;
 		Prob_theo_minor = Prob_theo_prop * (sin(sin_arg).^2) / ((w + w_nm) ^ 2);
 		Prob_theo = Prob_theo_major + Prob_theo_minor;
+		plot(time_axis, Prob_theo);
+		legend(["Simulated", "Theoretical (1st order)"]);
+
 	else
-		v_sum = v_matrix(target_state_num + 1, :) * (v_matrix(:, 1) ./ (v_matrix(:, 1) - w));
-		Prob_theo_prop = (abs(v_sum * 40) ^ 2);
-		sin_arg = (w_nm - 2 * w) * (T * dt) / 2;
-		Prob_theo = Prob_theo_prop * (sin(sin_arg) .^ 2) / ((w_nm - 2 * w) ^ 2);
+% 		v_sum = v_matrix(target_state_num + 1, :) * (v_matrix(:, 1) ./ (v_matrix(:, 1) - w));
+% 		Prob_theo_prop = (abs(v_sum * 40) ^ 2);
+% 		sin_arg = (w_nm - 2 * w) * (T * dt) / 2;
+% 		Prob_theo = Prob_theo_prop * (sin(sin_arg) .^ 2) / ((w_nm - 2 * w) ^ 2);
+% 		plot([0], [0]);
+		Prob_theo = zeros(1);
+		legend(["Simulated"]);
 	end
 
-	time_axis = T * dt / pi;
-			
-	plot(time_axis, Prob);
-	plot(time_axis, Prob_theo);
-	legend(["Simulated Prob", "Theoretical Prob"]);
 	title(sprintf("A = %.3f, w = %.3f for state 0\\rightarrow%i", A, w, target_state_num), FontSize=18);
 	xlabel('t/\pi', FontSize=18);
 	xlim([0,T(end)*dt/pi])
