@@ -41,7 +41,7 @@ function Prob = modded_peturb(A, w, t_final, target_state_num, peturb_type)
         peturb_term = @(x) A * sawtooth(X+pi/2,1/2) * -sawtooth(w * x * dt,1/2) + (X .^ 2 / 2);
     elseif strcmp(peturb_type,'square')
         peturb_term = @(x) A  * square(X) * square(w * x * dt) + (X .^ 2 / 2);
-    elseif strcmp(peturb_type,'quadratic')
+    elseif strcmp(peturb_type,'quartic')
         peturb_term = @(x) A * sin(X) * cos(w * x * dt) + (X .^ 2 / 2) + (X .^ 4 / 8);
     else
         peturb_term = @(x) A * sin(X) * cos(w * x * dt) + (X .^ 2 / 2);
