@@ -48,12 +48,10 @@ function [time_axis, Prob, Prob_theo] = main(A, w, t_final, target_state_num)
 	
 	if target_state_num == 1
 		v_nm = v_matrix(1, target_state_num + 1);
-		Prob_theo_prop = (abs(v_nm) ^ 2);
-		sin_arg = (w - w_nm) * T * dt / 2;
-		Prob_theo_major = Prob_theo_prop * (sin(sin_arg).^2) / ((w - w_nm) ^ 2);
-		sin_arg = (w + w_nm) * T * dt / 2;
-		Prob_theo_minor = Prob_theo_prop * (sin(sin_arg).^2) / ((w + w_nm) ^ 2);
-		Prob_theo = Prob_theo_major + Prob_theo_minor;
+		Prob_theo_prop = (abs(v_nm) ^ 2) / 4;
+		major_term = (exp(1i * (w_nm - w) * T * dt) - 1) ./ (w_nm - w);
+		minor_term = (exp(1i * (w_nm + w) * T * dt) - 1) ./ (w_nm + w);
+		Prob_theo = Prob_theo_prop * abs(major_term + minor_term) .^ 2;
 		plot(time_axis, Prob_theo);
 		legend(["Simulated", "Theoretical"], FontSize = 15);
 

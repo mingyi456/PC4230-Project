@@ -38,6 +38,6 @@ function v_elements = calc_v_matrix(A, size)
 	end
 	
 	v_elements = v_elements + transpose(triu(v_elements, 1));
-	writematrix(v_elements, sprintf("v_matrix, A=%f.csv", A));
+	% writematrix(v_elements, sprintf("v_matrix, A=%f.csv", A));
 
 end

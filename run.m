@@ -24,7 +24,6 @@ function run()
 	fprintf("A = %.3f, w = %.3f done\n", 0.01, 0.49);
 
     fprintf("Part 2 done\n");
-
     toc;
 
     % omega ~ 2 for 0->2 and 0->4
@@ -44,8 +43,6 @@ function run()
 
     fprintf("All done\n");
 	toc;
-
-
     
 end
 
