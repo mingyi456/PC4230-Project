@@ -22,17 +22,16 @@ v_matrix = zeros(size, size);
 parfor m = 1 : size
 	row = zeros(1, size);
 	state_m = states(m, :);
-	for n = m : size
-		if rem(m - n, 2) ~= 0 
-			state_n = states(n, :);
-			V_mn = state_m * transpose(V .* state_n);
-			row(n) = V_mn;
-		end
+	for n = 1 : size
+		state_n = states(n, :);
+		V_mn = state_m * transpose(V .* state_n);
+		row(n) = V_mn;
+
 	end
 	v_matrix(m, :) = row;
 end
 
-v_matrix = v_matrix + transpose(triu(v_matrix, 1));
+
 
 toc;
 v_matrix
