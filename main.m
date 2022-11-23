@@ -1,4 +1,5 @@
-function [time_axis, Prob, Prob_theo] = main(A, w, t_final, target_state_num) 
+function [time_axis, Prob, Prob_theo] = main(A, w, t_final, target_state_num)
+	hold on;
 	x_min = -80; x_max = 80;
 	x_range = x_max - x_min;
 	num_points = 2048;
