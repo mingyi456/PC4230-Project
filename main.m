@@ -38,6 +38,8 @@ function [time_axis, Prob, Prob_theo] = main(A, w, t_final, target_state_num)
 	
 	end
 
+    fig_prob_t = figure(1);
+    fig_prob_t.Position = [10 10 900 900];
 	time_axis = T * dt / pi;
 	plot(time_axis, Prob);
 
@@ -53,25 +55,33 @@ function [time_axis, Prob, Prob_theo] = main(A, w, t_final, target_state_num)
 		Prob_theo_minor = Prob_theo_prop * (sin(sin_arg).^2) / ((w + w_nm) ^ 2);
 		Prob_theo = Prob_theo_major + Prob_theo_minor;
 		plot(time_axis, Prob_theo);
-		legend(["Simulated", "Theoretical (1st order)"]);
+		legend(["Simulated", "Theoretical"], FontSize = 15);
 
-	else
-% 		v_sum = v_matrix(target_state_num + 1, :) * (v_matrix(:, 1) ./ (v_matrix(:, 1) - w));
-% 		Prob_theo_prop = (abs(v_sum * 40) ^ 2);
-% 		sin_arg = (w_nm - 2 * w) * (T * dt) / 2;
-% 		Prob_theo = Prob_theo_prop * (sin(sin_arg) .^ 2) / ((w_nm - 2 * w) ^ 2);
-% 		plot([0], [0]);
+    elseif target_state_num == 4
+		v_sum = v_matrix(target_state_num + 1, :) * (v_matrix(:, 1) ./ (v_matrix(:, 1) - w));
+		Prob_theo_prop = (abs(v_sum * 40) ^ 2);
+		sin_arg = (w_nm - 2 * w) * (T * dt) / 2;
+		Prob_theo = Prob_theo_prop * (sin(sin_arg) .^ 2) / ((w_nm - 2 * w) ^ 2);
+		plot(time_axis, Prob_theo);
+        legend(["Simulated", "Theoretical"], FontSize = 15);
+
+    else
 		Prob_theo = zeros(1);
-		legend(["Simulated"]);
+		legend(["Simulated"], FontSize=15);
 	end
 
 	title(sprintf("A = %.3f, w = %.3f for state 0\\rightarrow%i", A, w, target_state_num), FontSize=18);
-	xlabel('t/\pi', FontSize=18);
+	ax = gca;
+    ax.XAxis.FontSize = 14;
+    ax.YAxis.FontSize = 14;
+    xlabel('t/\pi', FontSize=18);
 	xlim([0,T(end)*dt/pi])
     ylabel(sprintf('P_{0\\rightarrow%i}', target_state_num), FontSize=18);
-	file_name = sprintf("A=%.3f, w=%.3f, t_final=%gpi, State=0-%i", A, w, t_final/pi, target_state_num);
-	saveas(gcf, sprintf(".\\plots\\%s.svg", file_name));
-	% close;
+    ylim([0,1.1*max(Prob_theo)])
+    legend('boxoff')
+    file_name = sprintf("A=%.3f, w=%.3f, t_final=%gpi, State=0-%i", A, w, t_final/pi, target_state_num);
+	saveas(gcf, sprintf(".\\final_plots\\%s.png", file_name));
+	close;
 	
 % 	plot(T * dt, freq(Prob));
 % 	title(sprintf("A = %.3f, w = %.3f", A, w));
