@@ -43,7 +43,7 @@ function run()
 
     parfor i1 = w_index
         for i2 = state_num_index
-	        main(A, w, t_final, state_num_list[i2]);
+	        main(A, w, t_final, state_num_list(i2));
             fprintf("A = 0.01, w = %.3f, State 0-%i done\n", w_list(i1), state_num_list(i2));
         end
     end
