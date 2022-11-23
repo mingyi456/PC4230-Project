@@ -59,9 +59,10 @@ function [time_axis, Prob, Prob_theo] = main(A, w, t_final, target_state_num)
 
     elseif target_state_num == 4
 		v_sum = v_matrix(target_state_num + 1, :) * (v_matrix(:, 1) ./ (v_matrix(:, 1) - w));
-		Prob_theo_prop = (abs(v_sum * 100) ^ 2);
+		Prob_theo_prop = (abs(v_sum) ^ 2);
 		sin_arg = (w_nm - 2 * w) * (T * dt) / 2;
 		Prob_theo = Prob_theo_prop * (sin(sin_arg) .^ 2) / ((w_nm - 2 * w) ^ 2);
+		Prob_theo = Prob_theo * (max(Prob) / max(Prob_theo));
 		plot(time_axis, Prob_theo);
         legend(["Simulated", "Theoretical"], FontSize = 15);
 
