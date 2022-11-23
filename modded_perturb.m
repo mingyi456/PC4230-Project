@@ -63,7 +63,7 @@ function [time_axis, Prob] = modded_perturb(A, w, t_final, target_state_num, per
 % 	v_matrix = calc_v_matrix(A,10);
 % 	w_nm = target_state_num;
 	
-	title(sprintf("A = %.3f, w = %.3f for state 0\\rightarrow%i (%s)", A, w, target_state_num), perturb_type, FontSize=18);
+	title(sprintf("A = %.3f, w = %.3f for state 0\\rightarrow%i (%s)", A, w, target_state_num, perturb_type), FontSize=18);
 	ax = gca;
     ax.XAxis.FontSize = 14;
     ax.YAxis.FontSize = 14;
