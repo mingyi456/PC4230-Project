@@ -43,7 +43,7 @@ function [time_axis, Prob, Prob_theo] = main(A, w, t_final, target_state_num)
 	time_axis = T * dt / pi;
 	plot(time_axis, Prob);
 
-	v_matrix = calc_v_matrix(A);
+	v_matrix = calc_v_matrix(A, 20);
 	w_nm = target_state_num;
 	
 	if target_state_num == 1
