@@ -3,7 +3,7 @@ function v_elements = calc_v_matrix(A, size)
       	A = 1;
 	end
 	if ~exist('size','var')
-      	size = 40;
+      	size = 100;
 	end
 
 	x_min = -80; x_max = 80;
@@ -38,5 +38,6 @@ function v_elements = calc_v_matrix(A, size)
 	end
 	
 	v_elements = v_elements + transpose(triu(v_elements, 1));
+	writematrix(v_elements, sprintf("v_matrix, A=%f.csv", A));
 
 end
