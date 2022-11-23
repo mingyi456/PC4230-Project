@@ -1,5 +1,4 @@
 function [time_axis, Prob, Prob_theo] = main(A, w, t_final, target_state_num) 
-	clc; hold on;
 	x_min = -80; x_max = 80;
 	x_range = x_max - x_min;
 	num_points = 2048;
@@ -59,7 +58,7 @@ function [time_axis, Prob, Prob_theo] = main(A, w, t_final, target_state_num)
 
     elseif target_state_num == 4
 		v_sum = v_matrix(target_state_num + 1, :) * (v_matrix(:, 1) ./ (v_matrix(:, 1) - w));
-		Prob_theo_prop = (abs(v_sum * 40) ^ 2);
+		Prob_theo_prop = (abs(v_sum * 100) ^ 2);
 		sin_arg = (w_nm - 2 * w) * (T * dt) / 2;
 		Prob_theo = Prob_theo_prop * (sin(sin_arg) .^ 2) / ((w_nm - 2 * w) ^ 2);
 		plot(time_axis, Prob_theo);
@@ -77,7 +76,7 @@ function [time_axis, Prob, Prob_theo] = main(A, w, t_final, target_state_num)
     xlabel('t/\pi', FontSize=18);
 	xlim([0,T(end)*dt/pi])
     ylabel(sprintf('P_{0\\rightarrow%i}', target_state_num), FontSize=18);
-    ylim([0,1.1*max(Prob_theo)])
+    % ylim([0,1.1*max(Prob_theo)])
     legend('boxoff')
     file_name = sprintf("A=%.3f, w=%.3f, t_final=%gpi, State=0-%i", A, w, t_final/pi, target_state_num);
 	saveas(gcf, sprintf(".\\final_plots\\%s.png", file_name));
